@@ -1,0 +1,12 @@
+#page-footer {
+  padding-top: $line-height-computed * 2;
+  padding-bottom: $line-height-computed * 2;
+  font-size: $font-size-small;
+  text-align: center;
+  background-color: $desert-storm-grey;
+  border-top: 1px solid $solid-coated-warm-grey;
+
+  p {
+    @include make-flow-text;
+  }
+}

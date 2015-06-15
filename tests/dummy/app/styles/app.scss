@@ -1,0 +1,149 @@
+@import "variables";
+@import "bootstrap";
+@import "flow-text";
+@import "footer";
+
+body {
+  background-color: $seashell-white;
+}
+
+.jumbotron {
+  $font-color: white;
+
+  margin-bottom: $line-height-computed * 2;
+  padding-bottom: $line-height-computed * 2;
+  padding-top: $line-height-computed * 2;
+  color: $font-color;
+  background-color: $burnt-sienna;
+
+  h1 {
+    margin-bottom: $line-height-computed * 2;
+    font-size: $font-size-h1;
+    text-shadow: 0 1px 2px rgba(black, 0.3);
+
+    small {
+      color: $gray-lighter;
+    }
+  }
+
+  a {
+    color: $font-color;
+    transition: text-shadow 300ms;
+
+    &:hover {
+      text-shadow: 0 2px 4px rgba(black, 0.3);
+    }
+  }
+}
+
+nav {
+  @include make-sm-column($side-nav-sm-columns);
+  @include make-sm-column-push(12 - $side-nav-sm-columns);
+}
+
+main {
+  @include make-sm-column(12 - $side-nav-sm-columns);
+  @include make-sm-column-pull($side-nav-sm-columns);
+}
+
+#side-nav {
+  position: relative;
+  margin-bottom: $line-height-computed;
+
+  &.affix {
+    position: fixed;
+    top: 0;
+
+    + .content {
+      @include make-sm-column-pull(0);
+    }
+
+    @media only screen and (max-width: $screen-xs-max) {
+      position: relative;
+      top: 0 !important;
+    }
+  }
+
+  li {
+    border-left: 1px solid transparent;
+
+    a {
+      padding-top: $line-height-computed / 2;
+      padding-bottom: $line-height-computed / 2;
+      color: $gray;
+      text-decoration: underline;
+      border-left: 2px solid transparent;
+    }
+
+    @media only screen and (min-width : $screen-sm-min) {
+      position: relative;
+      font-size: $font-size-base * 0.85;
+
+      a {
+        position: relative;
+        @include make-flow-text;
+        text-decoration: none;
+
+        &:hover {
+          font-weight: bold;
+          background-color: transparent;
+        }
+      }
+
+      &:hover {
+        border-left-color: $burnt-sienna;
+      }
+
+      &.active,
+      &.active a {
+        font-weight: bold;
+        border-left-color: $burnt-sienna;
+      }
+    }
+  }
+}
+
+main section {
+  margin-bottom: $line-height-computed * 3;
+
+  h1 {
+    font-size: $font-size-h3;
+    color: $carmine-pink;
+  }
+
+  h2 {
+    margin-top: $line-height-computed / 2;
+    font-size: $font-size-h5;
+  }
+
+  hr {
+    margin-top: $line-height-computed / 2;
+    border-color: $bon-jour-grey;
+  }
+
+  p,
+  ul:not(.country-list) > li {
+    @include make-flow-text;
+  }
+
+  .sample {
+    margin-bottom: $line-height-computed * 2;
+  }
+
+  a > code {
+    padding: 0;
+    background-color: transparent;
+  }
+
+  .col-code {
+    @include make-md-column($code-sm-columns);
+  }
+
+  .col-result {
+    @include make-md-column(12 - $code-sm-columns);
+  }
+}
+
+[data-spy=scroll] {
+  position: relative;
+}

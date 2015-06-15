@@ -1,0 +1,161 @@
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="text-center">
+      <span class="flow-text">International Telephone Input</span><br/>
+      <small><span class="flow-text">Ember Addon</span></small>
+    </h1>
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-1">
+        <p class="lead text-center">
+          <span class="flow-text">An Ember.js addon for entering and validating international telephone numbers.</span>
+        </p>
+      </div>
+    </div>
+    <div class="row text-center">
+      <!-- <button class="btn btn-sm btn-default">github</button> -->
+      <a href="https://github.com/justin-lau/ember-intl-tel-input"><span class="fa fa-5x fa-github"></span></a>
+    </div>
+  </div>
+</div>{{!-- /.jumbotron --}}
+
+<div class="container">
+
+  <div class="row">
+
+    <nav>
+      {{#bootstrap-affix id="side-nav" after=".jumbotron" autoPosition=true}}
+        <ul class="nav">
+          <li><a href="#basic-usage">Basic Usage</a></li>
+          <li><a href="#with-utilities-script">With Utilities Script</a></li>
+          <li><a href="#lookup-users-country">Lookup User's Country</a></li>
+          <li><a href="#credits">Credits</a></li>
+        </ul>
+      {{/bootstrap-affix}}
+    </nav>
+
+    <main>
+
+      <section id="basic-usage">
+        <h1><span class="flow-text">Basic Usage</span></h1>
+        <hr />
+
+        <p>Just place the {{#code-inline}}\{{intl-tel-input}}{{/code-inline}} component in the handlebars template, as you would have guessed.</p>
+
+        <div class="row sample">
+
+          <div class="col-code">
+            <h2><span class="flow-text">Code</span></h2>
+            {{#code-block language='handlebars'}}\{{intl-tel-input}}{{/code-block}}
+          </div>
+
+          <div class="col-result">
+            <h2><span class="flow-text">Result</span></h2>
+            {{intl-tel-input autoFormat=false autoPlaceholder=false}}
+          </div>
+
+        </div>{{!-- /.row --}}
+
+        <p>The component derives from <a href="http://emberjs.com/api/classes/Ember.TextField.html">{{#code-inline}}Ember.TextField{{/code-inline}}</a>, anything you can do with the input helper can also be done with this component.</p>
+
+        <div class="row sample">
+
+          <div class="col-code">
+            <h2><span class="flow-text">Code</span></h2>
+            {{#code-block language='handlebars'}}\{{intl-tel-input value="555-5555"}}{{/code-block}}
+          </div>
+
+          <div class="col-result">
+            <h2><span class="flow-text">Result</span></h2>
+            {{intl-tel-input autoFormat=false autoPlaceholder=false value="555-5555"}}
+          </div>
+
+        </div>{{!-- /.row --}}
+
+      </section>{{!-- /#basic-usage --}}
+
+      <section id="with-utilities-script">
+        <h1><span class="flow-text">With Utilities Script</span></h1>
+        <hr />
+
+        <p>With the <a href="https://github.com/Bluefieldscom/intl-tel-input#utilities-script">utilities script</a> included, the {{#code-inline}}autoFormat{{/code-inline}} and {{#code-inline}}autoPlaceholder{{/code-inline}} options are automatically enabled. The rest of the examples assume the utilities script is included.</p>
+
+        <div class="row sample">
+
+          <div class="col-code">
+            <h2><span class="flow-text">Code</span></h2>
+            {{#code-block language='javascript'}}// Brocfile.js
+
+var app = new EmberAddon({
+
+  intlTelInput: {
+    includeUtilsScript: true, // default to false
+  },
+
+});{{/code-block}}
+            {{#code-block language='handlebars'}}\{{intl-tel-input}}{{/code-block}}
+          </div>
+
+          <div class="col-result">
+            <h2><span class="flow-text">Result</span></h2>
+            {{intl-tel-input}}
+          </div>
+
+        </div>{{!-- /.row --}}
+
+      </section>{{!-- /#with-utilities-script --}}
+
+      <section id="lookup-users-country">
+        <h1><span class="flow-text">Lookup User's Country</span></h1>
+        <hr />
+
+        <p>{{#code-inline}}intl-tel-input{{/code-inline}} provides a convenient way to look up the user's country based on their IP addresses. This example uses <a href="http://ipinfo.io">ipinfo.io</a> for demonstration.</p>
+
+        <div class="row sample">
+
+          <div class="col-code">
+            <h2><span class="flow-text">Code</span></h2>
+            {{#code-block language='javascript'}}// controller
+
+geoIpLookupFunc: function(callback) {
+  $.getJSON('http://ipinfo.io')
+   .always(function(resp) {
+     if (!resp || !resp.country) {
+       callback('');
+     }
+
+     callback(resp.country);
+   });
+}{{/code-block}}
+            {{#code-block language='handlebars'}}\{{intl-tel-input
+  defaultCountry="auto"
+  geoIpLookup=geoIpLookupFunc}}{{/code-block}}
+          </div>
+
+          <div class="col-result">
+            <h2><span class="flow-text">Result</span></h2>
+            {{intl-tel-input defaultCountry="auto" geoIpLookup=geoIpLookupFunc}}
+          </div>
+
+        </div>{{!-- /.row --}}
+
+      </section>{{!-- /#lookup-users-country --}}
+
+      <section id="credits">
+        <h1><span class="flow-text">Credits</span></h1>
+        <hr />
+        <p>This is a wrapper library. It simply wraps the API of the <a href="http://jackocnr.com/intl-tel-input.html">original jQuery plugin</a> created by <a href="http://jackocnr.com/">Jack O'Connor</a> into an <a href="http://emberjs.com/">Ember.js</a> component.</p>
+        <p>The original jQuery plugin also depends on several other open-source libraries:</p>
+        <ul class="list">
+          <li>Flag images from <a href="https://github.com/behdad/region-flags">region-flags</a></li>
+          <li>Original country data from mledoze's <a href="https://github.com/mledoze/countries">World countries in JSON, CSV and XML</a></li>
+          <li>Formatting/validation/example number code from Google's <a href="https://github.com/googlei18n/libphonenumber">libphonenumber</a></li>
+          <li>Lookup user's country using <a href="http://ipinfo.io/">ipinfo.io</a></li>
+        </ul>
+        <p>The layout and color theme of this very documentation page comes from Twitter's <a href="http://getbootstrap.com/">Bootstrap</a> and <a href="http://emberjs.com/">Ember.js</a>, respectively.</p>
+      </section>{{!-- /#about --}}
+
+    </main>
+
+  </div>{{!-- /.row --}}
+
+</div>{{!-- /.container --}}

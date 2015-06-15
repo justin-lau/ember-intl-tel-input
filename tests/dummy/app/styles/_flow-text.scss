@@ -1,0 +1,29 @@
+/**
+ * Flow Text borrowed from [Materialize CSS](https://github.com/Dogfalo/materialize),
+ * modified to suit this website's purpose.
+ */
+
+@mixin make-flow-text {
+  $range : $screen-lg-min - $screen-sm-min !default;
+  $intervals: 20 !default;
+  $interval-size: $range / $intervals !default;
+
+  // font-weight: 300;
+
+  $i: 0;
+  @while $i <= $intervals {
+    @media only screen and (min-width : $screen-sm-min + ($i * $interval-size)) {
+      font-size: 1em * (1 + (.02 * $i));
+    }
+    $i: $i + 1;
+  }
+
+  // Handle below 360px screen
+  @media only screen and (max-width: $screen-xs-max) {
+    font-size: 1em;
+  }
+}
+
+.flow-text{
+  @include make-flow-text;
+}
