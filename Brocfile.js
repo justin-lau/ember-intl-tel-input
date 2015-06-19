@@ -33,6 +33,10 @@ var app = new EmberAddon({
 
   },
 
+  fingerprint: {
+    enabled: false,
+  },
+
   intlTelInput: {
     includeUtilsScript: true,
   },
