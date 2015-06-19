@@ -51,7 +51,7 @@ module.exports = function(environment) {
     'default-src': "'none'",
     'script-src': "'self'",
     'font-src': "'self' maxcdn.bootstrapcdn.com",
-    'connect-src': "'self' ipinfo.io",
+    'connect-src': "'self' www.telize.com",
     'img-src': "'self'",
     'style-src': "'self' 'unsafe-inline' maxcdn.bootstrapcdn.com",
     'media-src': "'self'"

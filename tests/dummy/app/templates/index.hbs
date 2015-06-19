@@ -108,7 +108,7 @@ var app = new EmberAddon({
         <h1><span class="flow-text">Lookup User's Country</span></h1>
         <hr />
 
-        <p>{{#code-inline}}intl-tel-input{{/code-inline}} provides a convenient way to look up the user's country based on their IP addresses. This example uses <a href="http://ipinfo.io">ipinfo.io</a> for demonstration.</p>
+        <p>{{#code-inline}}intl-tel-input{{/code-inline}} provides a convenient way to look up the user's country based on their IP addresses. This example uses <a href="http://www.telize.com/">Telize</a> for demonstration.</p>
 
         <div class="row sample">
 
@@ -117,13 +117,13 @@ var app = new EmberAddon({
             {{#code-block language='javascript'}}// controller
 
 geoIpLookupFunc: function(callback) {
-  $.getJSON('http://ipinfo.io')
+  $.getJSON('//www.telize.com/geoip')
    .always(function(resp) {
-     if (!resp || !resp.country) {
+     if (!resp || !resp.country_code) {
        callback('');
      }
 
-     callback(resp.country);
+     callback(resp.country_code);
    });
 }{{/code-block}}
             {{#code-block language='handlebars'}}\{{intl-tel-input
@@ -151,6 +151,7 @@ geoIpLookupFunc: function(callback) {
           <li>Formatting/validation/example number code from Google's <a href="https://github.com/googlei18n/libphonenumber">libphonenumber</a></li>
           <li>Lookup user's country using <a href="http://ipinfo.io/">ipinfo.io</a></li>
         </ul>
+        <p>This demo page uses <a href="http://www.telize.com/">Telize</a> for a fast, SSL-supported, and FREE Geo IP service.</p>
         <p>The layout and color theme of this very documentation page comes from Twitter's <a href="http://getbootstrap.com/">Bootstrap</a> and <a href="http://emberjs.com/">Ember.js</a>, respectively.</p>
       </section>{{!-- /#about --}}
 
