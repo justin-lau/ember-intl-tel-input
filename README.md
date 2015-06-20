@@ -1,5 +1,9 @@
 # ember-intl-tel-input
 
+[![npm version](https://badge.fury.io/js/ember-intl-tel-input.svg)](http://badge.fury.io/js/ember-intl-tel-input)
+[![Dependency Status](https://david-dm.org/justin-lau/ember-intl-tel-input.svg)](https://david-dm.org/justin-lau/ember-intl-tel-input)
+[![devDependency Status](https://david-dm.org/justin-lau/ember-intl-tel-input/dev-status.svg)](https://david-dm.org/justin-lau/ember-intl-tel-input#info=devDependencies)
+
 An Ember.js addon for entering and validating international telephone numbers.
 
 Please check out the [demo page](http://justin-lau.github.io/ember-intl-tel-input/) to see the addon in action.

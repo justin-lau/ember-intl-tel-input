@@ -1,6 +1,6 @@
 {
   "name": "ember-intl-tel-input",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "The default blueprint for ember-cli addons.",
   "directories": {
     "doc": "doc",
