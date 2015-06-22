@@ -44,6 +44,7 @@ module.exports = function(environment) {
 
     ENV.googleAnalytics = {
       webPropertyId: 'UA-49750808-3',
+      tracker: 'ga.js',
     };
   }
 
