@@ -27,6 +27,7 @@
         <ul class="nav">
           <li><a href="#basic-usage">Basic Usage</a></li>
           <li><a href="#with-utilities-script">With Utilities Script</a></li>
+          <li><a href="#properties-binding">Properties Binding</a></li>
           <li><a href="#lookup-users-country">Lookup User's Country</a></li>
           <li><a href="#credits">Credits</a></li>
         </ul>
@@ -103,6 +104,73 @@ var app = new EmberAddon({
         </div>{{!-- /.row --}}
 
       </section>{{!-- /#with-utilities-script --}}
+
+      <section id="properties-binding">
+        <h1><span class="flow-text">Properties Binding</span></h1>
+        <hr />
+
+        <p>Use the following properties for binding:</p>
+
+        <ul>
+          <li>{{#code-inline}}value{{/code-inline}} for input value</li>
+          <li>{{#code-inline}}selectedCountryData{{/code-inline}} for data of the currently selected country</li>
+          <li>{{#code-inline}}number{{/code-inline}} for formatted phone number</li>
+          <li>{{#code-inline}}extension{{/code-inline}} for the extension part of the number</li>
+          <li>{{#code-inline}}numberType{{/code-inline}} for the type of the current number</li>
+          <li>{{#code-inline}}isValidNumber{{/code-inline}} for the validity of the number</li>
+          <li>{{#code-inline}}validationError{{/code-inline}} for information about a validation error</li>
+        </ul>
+
+        <div class="row sample">
+
+          <div class="col-code">
+            <h2><span class="flow-text">Code</span></h2>
+            {{#code-block language='handlebars'}}\{{intl-tel-input
+  allowExtensions=true
+  value=value
+  selectedCountryData=selectedCountryData
+  number=number
+  extension=extension
+  numberType=numberType
+  isValidNumber=isValidNumber
+  validationError=validationError}}{{/code-block}}
+          </div>
+
+          <div class="col-result">
+            <h2><span class="flow-text">Result</span></h2>
+            {{intl-tel-input
+              allowExtensions=true
+              value=value
+              selectedCountryData=selectedCountryData
+              number=number
+              extension=extension
+              numberType=numberType
+              isValidNumber=isValidNumber
+              validationError=validationError}}
+
+            <dl>
+              <dt>\{{value}}:</dt>
+              <dd>{{{if value value '<br>'}}}</dd>
+              <dt>\{{selectedCountryData.name}}:</dt>
+              <dd>{{{if selectedCountryData selectedCountryData.name '<br>'}}}</dd>
+              <dt>\{{selectedCountryData.iso2}}:</dt>
+              <dd>{{{if selectedCountryData selectedCountryData.iso2 '<br>'}}}</dd>
+              <dt>\{{selectedCountryData.dialCode}}:</dt>
+              <dd>{{{if selectedCountryData selectedCountryData.dialCode '<br>'}}}</dd>
+              <dt>\{{number}}:</dt>
+              <dd>{{{if number number '<br>'}}}</dd>
+              <dt>\{{extension}}:</dt>
+              <dd>{{{if extension extension '<br>'}}}</dd>
+              <dt>\{{isValidNumber}}:</dt>
+              <dd>{{{if isValidNumber 'true' 'false'}}}</dd>
+              <dt>\{{validationError}}:</dt>
+              <dd>{{{if validationError validationError '<br>'}}}</dd>
+            </dl>
+          </div>
+
+        </div>{{!-- /.row --}}
+
+      </section>{{!-- /#properties-binding --}}
 
       <section id="lookup-users-country">
         <h1><span class="flow-text">Lookup User's Country</span></h1>

@@ -50,6 +50,30 @@ var app = new EmberAddon({
 {{intl-tel-input}}
 ```
 
+## Properties Binding
+
+Use the following properties for binding:
+
+* `value` for input value
+* `selectedCountryData` for data of the currently selected country
+* `number` for formatted phone number
+* `extension` for the extension part of the number
+* `numberType` for the type of the current number
+* `isValidNumber` for the validity of the number
+* `validationError` for information about a validation error
+
+```htmlbars
+{{intl-tel-input
+  allowExtensions=true
+  value=value
+  selectedCountryData=selectedCountryData
+  number=number
+  extension=extension
+  numberType=numberType
+  isValidNumber=isValidNumber
+  validationError=validationError}}
+```
+
 ## Lookup User's Country
 `intl-tel-input` provides a convenient way to look up the user's country based on their IP addresses. This example uses [Telize](http://www.telize.com/) for demonstration.
 

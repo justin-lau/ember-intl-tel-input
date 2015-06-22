@@ -1,3 +1,5 @@
+/* global intlTelInputUtils */
+
 import Ember from 'ember';
 import layout from '../templates/components/intl-tel-input';
 
@@ -22,7 +24,7 @@ export default Ember.TextField.extend({
    * formatting rules. This will also prevent the user from entering invalid
    * characters (triggering a red flash in the input - see
    * [Troubleshooting](https://github.com/Bluefieldscom/intl-tel-input#troubleshooting)
-   * to customise this). Requires the `utilsScript` option.
+   * to customise this). Requires the utilities script.
    *
    * @property autoFormat
    * @type Boolean
@@ -43,7 +45,7 @@ export default Ember.TextField.extend({
 
   /**
    * Add or remove input placeholder with an example number for the selected
-   * country. Requires the `utilsScript` option.
+   * country. Requires the utilities script.
    *
    * @property autoPlaceholder
    * @type Boolean
@@ -92,16 +94,51 @@ export default Ember.TextField.extend({
   nationalMode: true,
 
   /**
-   * Specify one of the keys from the global enum `intlTelInputUtils.numberType`
-   * e.g. "FIXED_LINE" to tell the plugin you're expecting that type of number.
-   * Currently this is only used to set the placeholder to the right type of
-   * number.
+   * Gets the type of the current `number`. Setting `numberType` when `value`
+   * is empty and no custom placeholder is set will affect the format of the
+   * auto placeholder. Requires the utilities script.
+   *
+   * Supported values:
+   * - "FIXED_LINE"
+   * - "MOBILE"
+   * - "FIXED_LINE_OR_MOBILE"
+   * - "TOLL_FREE"
+   * - "PREMIUM_RATE"
+   * - "SHARED_COST"
+   * - "VOIP"
+   * - "PERSONAL_NUMBER"
+   * - "PAGER"
+   * - "UAN"
+   * - "VOICEMAIL"
+   * - "UNKNOWN"
    *
    * @property numberType
    * @type String
    * @default "MOBILE"
    */
-  numberType: "MOBILE",
+  numberType: Ember.computed('number', {
+    get: function() {
+      if (this.get('hasUtilsScript')) {
+
+        var typeNumber = this.$().intlTelInput('getNumberType');
+        for(let key in intlTelInputUtils.numberType) {
+          if (intlTelInputUtils.numberType[key] === typeNumber) {
+            return key;
+          }
+        }
+
+      }
+
+      return 'MOBILE';
+    },
+    set: function(key, newValue) {
+      if (this.get('hasUtilsScript') && newValue in intlTelInputUtils.numberType) {
+        return newValue;
+      }
+
+      return 'MOBILE';
+    }
+  }),
 
   /**
    * Display only the countries you specify - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/only-countries-europe.html).
@@ -119,12 +156,143 @@ export default Ember.TextField.extend({
    * @type Array
    * @default ["us", "gb"]
    */
-  preferredCountries: ["us", "gb"],
+  preferredCountries: ['us', 'gb'],
+
+  /**
+   * Specify the format of the `number` property. Requires the utilities
+   * script.
+   *
+   * Supported values:
+   * - "E164"          e.g. "+41446681800"
+   * - "INTERNATIONAL" e.g. "+41 44 668 1800"
+   * - "NATIONAL"      e.g. "044 668 1800"
+   * - "RFC3966"       e.g. "tel:+41-44-668-1800"
+   *
+   * @property numberFormat
+   * @type String
+   * @default 'E164'
+   */
+  _numberFormat: 'E164',
+  numberFormat: Ember.computed('value', {
+    get: function() {
+      return this.get('_numberFormat');
+    },
+    set: function(key, newValue) {
+      if (this.get('hasUtilsScript') && newValue in intlTelInputUtils.numberFormat) {
+        this.set('_numberFormat', newValue);
+      }
+
+      return this.get('_numberFormat');
+    }
+  }),
+
+  /**
+   * Get the current number in the format specified by the `numberFormat`
+   * property. Note that even if `nationalMode` is enabled, this can still
+   * return a full international number. Requires the utilities script.
+   *
+   * @property number
+   * @type String
+   * @readOnly
+   */
+  number: Ember.computed('value', 'numberFormat', {
+    get: function() {
+      if (this.get('hasUtilsScript')) {
+        var numberFormat = intlTelInputUtils.numberFormat[this.get('numberFormat')];
+        return this.$().intlTelInput('getNumber', numberFormat);
+      }
+    },
+    set: function() { /* no-op */ }
+  }),
+
+  /**
+   * Get the extension part of the current number, so if the number was
+   * "+1 (702) 123-1234 ext. 12345" this would return "12345".
+   *
+   * @property extension
+   * @type String
+   * @readOnly
+   */
+  extension: Ember.computed('number', {
+    get: function() {
+      return this.$().intlTelInput('getExtension');
+    },
+    set: function() { /* no-op */ }
+  }),
+
+  /**
+   * Get the country data for the currently selected flag.
+   *
+   * @property selectedCountryData
+   * @type Object
+   * @readOnly
+   */
+  selectedCountryData: Ember.computed('value', {
+    get: function() {
+      return this.$().intlTelInput('getSelectedCountryData');
+    },
+    set: function() { /* no-op */ }
+  }),
+
+  /**
+   * Get the validity of the current `number`.
+   *
+   * @property isValidNumber
+   * @type Boolean
+   * @readOnly
+   */
+  isValidNumber: Ember.computed('number', {
+    get: function() {
+      return this.$().intlTelInput('isValidNumber');
+    },
+    set: function() { /* no-op */ }
+  }),
+
+  /**
+   * Get more information about a validation error. Requires the utilities
+   * scripts.
+   *
+   * @property isValidNumber
+   * @type String
+   * @readOnly
+   */
+  validationError: Ember.computed('number', {
+    get: function() {
+      if (this.get('hasUtilsScript')) {
+        var errorNumber = this.$().intlTelInput('getValidationError');
+        for(let key in intlTelInputUtils.validationError) {
+          if (intlTelInputUtils.validationError[key] === errorNumber) {
+            return key;
+          }
+        }
+      }
+    },
+    set: function() { /* no-op */ }
+  }),
+
+  /**
+   * Returns whether the untilities script presents.
+   *
+   * @property hasUtilsScript
+   * @type Boolean
+   * @readOnly
+   */
+  hasUtilsScript: Ember.computed({
+    get: function() {
+      return (typeof intlTelInputUtils !== 'undefined');
+    },
+    set: function() { /* no-op */ }
+  }),
 
   /**
    * @method setupIntlTelInput
    */
   setupIntlTelInput: Ember.on('didInsertElement', function() {
+    var notifyPropertyChange = this.notifyPropertyChange.bind(this, 'value');
+
+    // let Ember be aware of the changes
+    this.$().change(notifyPropertyChange);
+
     this.$().intlTelInput({
       allowExtensions: this.get('allowExtensions'),
       autoFormat: this.get('autoFormat'),
@@ -136,6 +304,10 @@ export default Ember.TextField.extend({
       numberType: this.get('numberType'),
       onlyCountries: this.get('onlyCountries'),
       preferredCountries: this.get('preferredCountries'),
+    })
+    .then(function() {
+      // trigger a change after the plugin is initialized to set initial values
+      notifyPropertyChange();
     });
   }),
 

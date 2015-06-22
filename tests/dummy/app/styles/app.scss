@@ -3,10 +3,6 @@
 @import "flow-text";
 @import "footer";
 
-body {
-  background-color: $seashell-white;
-}
-
 .jumbotron {
   $font-color: white;
 
@@ -130,11 +126,6 @@ main section {
     margin-bottom: $line-height-computed * 2;
   }
 
-  a > code {
-    padding: 0;
-    background-color: transparent;
-  }
-
   .col-code {
     @include make-md-column($code-sm-columns);
   }
@@ -146,4 +137,15 @@ main section {
 
 [data-spy=scroll] {
   position: relative;
+}
+
+/* code-inline */
+:not(pre) > code[class*="language-"] {
+  padding-right: $line-height-computed / 4;
+  padding-left: $line-height-computed / 4;
+  background-color: darken($body-bg, 10%);
+}
+
+a > code[class*="language-"] {
+  text-decoration: underline;
 }
