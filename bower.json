@@ -12,7 +12,7 @@
     "jquery": "^1.11.1",
     "loader.js": "ember-cli/loader.js#3.2.0",
     "qunit": "~1.17.1",
-    "intl-tel-input": "Bluefieldscom/intl-tel-input#25b9f387bc616ca8f432defb35b918d45ab79432",
+    "intl-tel-input": "~6.0.3",
     "bootstrap-sass": "~3.3.5",
     "prism": "~1.0.0"
   }
