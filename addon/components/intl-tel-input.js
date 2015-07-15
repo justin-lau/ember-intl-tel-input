@@ -288,7 +288,9 @@ export default Ember.TextField.extend({
    * @method setupIntlTelInput
    */
   setupIntlTelInput: Ember.on('didInsertElement', function() {
-    var notifyPropertyChange = this.notifyPropertyChange.bind(this, 'value');
+    var notifyPropertyChange = () => {
+      this.notifyPropertyChange('value');
+    };
 
     // let Ember be aware of the changes
     this.$().change(notifyPropertyChange);
