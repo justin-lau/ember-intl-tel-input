@@ -34,8 +34,9 @@ The component derives from `Ember.TextField`, anything you can do with the input
 
 With the [utilities script](https://github.com/Bluefieldscom/intl-tel-input#utilities-script) included, the `autoFormat` and `autoPlaceholder` options are automatically enabled.
 
+If your ember version is <= 1.12, use Brocfile:
 ```javascript
-// Brocfile.js
+// Brocfile.js (if ember <= 1.12)
 
 var app = new EmberAddon({
 
@@ -43,6 +44,18 @@ var app = new EmberAddon({
     includeUtilsScript: true, // default to false
   },
 
+});
+```
+
+Otherwise, use ember-cli-build.js
+```javascript
+// ember-cli-build.js
+
+var app = new EmberApp(defaults, {
+  // Add options here
+  intlTelInput: {
+    includeUthistilsScript: true,
+  }
 });
 ```
 
