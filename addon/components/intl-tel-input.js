@@ -289,25 +289,28 @@ export default Ember.TextField.extend({
    */
   setupIntlTelInput: Ember.on('didInsertElement', function() {
     var notifyPropertyChange = this.notifyPropertyChange.bind(this, 'value');
+    var that = this;
+    Ember.run.scheduleOnce('afterRender', function() {
 
-    // let Ember be aware of the changes
-    this.$().change(notifyPropertyChange);
+      // let Ember be aware of the changes
+      that.$().change(notifyPropertyChange);
 
-    this.$().intlTelInput({
-      allowExtensions: this.get('allowExtensions'),
-      autoFormat: this.get('autoFormat'),
-      autoHideDialCode: this.get('autoHideDialCode'),
-      autoPlaceholder: this.get('autoPlaceholder'),
-      defaultCountry: this.get('defaultCountry'),
-      geoIpLookup: this.get('geoIpLookup'),
-      nationalMode: this.get('nationalMode'),
-      numberType: this.get('numberType'),
-      onlyCountries: this.get('onlyCountries'),
-      preferredCountries: this.get('preferredCountries'),
-    })
-    .then(function() {
-      // trigger a change after the plugin is initialized to set initial values
-      notifyPropertyChange();
+      that.$().intlTelInput({
+        allowExtensions: that.get('allowExtensions'),
+        autoFormat: that.get('autoFormat'),
+        autoHideDialCode: that.get('autoHideDialCode'),
+        autoPlaceholder: that.get('autoPlaceholder'),
+        defaultCountry: that.get('defaultCountry'),
+        geoIpLookup: that.get('geoIpLookup'),
+        nationalMode: that.get('nationalMode'),
+        numberType: that.get('numberType'),
+        onlyCountries: that.get('onlyCountries'),
+        preferredCountries: that.get('preferredCountries')
+      })
+      .then(function() {
+        // trigger a change after the plugin is initialized to set initial values
+        notifyPropertyChange();
+      });
     });
   }),
 
