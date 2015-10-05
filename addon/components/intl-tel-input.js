@@ -199,17 +199,18 @@ export default Ember.TextField.extend({
   number: Ember.computed('value', 'numberFormat', {
     get: function() {
       if (this.get('hasUtilsScript')) {
+        if (this.get('deferNumber')) { return this.get('deferNumber'); }
         var numberFormat = intlTelInputUtils.numberFormat[this.get('numberFormat')];
         return this.$().intlTelInput('getNumber', numberFormat);
       }
     },
     set: function(key, number) {
       if (typeof number === 'undefined' || number === '') { return; }
-      if (!number.startsWith('+')) { number = '+' + number; }
       if (this.element === null) {
         // schedule to set after element is created
         this.set('deferNumber', number);
       } else {
+        if (!number.startsWith('+')) { number = '+' + number; }
         this.$().intlTelInput('setNumber', number);
       }
     }
@@ -322,6 +323,7 @@ export default Ember.TextField.extend({
         notifyPropertyChange();
         var number = that.get('deferNumber');
         if (number !== null) {
+          if (!number.startsWith('+')) { number = '+' + number; }
           that.$().intlTelInput('setNumber', number);
         }
       });
