@@ -8,6 +8,7 @@ export default Ember.TextField.extend({
   tagName: 'input',
   attributeBindings: ['type'],
   type: 'tel',
+  deferNumber: null,
 
   /**
    * When `autoFormat` is enabled, this option will support formatting
@@ -205,7 +206,12 @@ export default Ember.TextField.extend({
     set: function(key, number) {
       if (typeof number === 'undefined' || number === '') { return; }
       if (!number.startsWith('+')) { number = '+' + number; }
-      this.$().intlTelInput('setNumber', number);
+      if (this.element === null) {
+        // schedule to set after element is created
+        this.set('deferNumber', number);
+      } else {
+        this.$().intlTelInput('setNumber', number);
+      }
     }
   }),
 
@@ -314,6 +320,10 @@ export default Ember.TextField.extend({
       .then(function() {
         // trigger a change after the plugin is initialized to set initial values
         notifyPropertyChange();
+        var number = that.get('deferNumber');
+        if (number !== null) {
+          that.$().intlTelInput('setNumber', number);
+        }
       });
     });
   }),
