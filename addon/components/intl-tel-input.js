@@ -202,7 +202,11 @@ export default Ember.TextField.extend({
         return this.$().intlTelInput('getNumber', numberFormat);
       }
     },
-    set: function() { /* no-op */ }
+    set: function(key, number) {
+      if (typeof number === 'undefined' || number === '') { return; }
+      if (!number.startsWith('+')) { number = '+' + number; }
+      this.$().intlTelInput('setNumber', number);
+    }
   }),
 
   /**
