@@ -8,6 +8,7 @@ export default Ember.TextField.extend({
   tagName: 'input',
   attributeBindings: ['type'],
   type: 'tel',
+  deferNumber: null,
 
   /**
    * When `autoFormat` is enabled, this option will support formatting
@@ -198,11 +199,20 @@ export default Ember.TextField.extend({
   number: Ember.computed('value', 'numberFormat', {
     get: function() {
       if (this.get('hasUtilsScript')) {
+        if (this.get('deferNumber')) { return this.get('deferNumber'); }
         var numberFormat = intlTelInputUtils.numberFormat[this.get('numberFormat')];
         return this.$().intlTelInput('getNumber', numberFormat);
       }
     },
-    set: function() { /* no-op */ }
+    set: function(key, number) {
+      if (typeof number === 'undefined' || number === '') { return; }
+      if (this.element === null) {
+        // schedule to set after element is created
+        this.set('deferNumber', number);
+      } else {
+        this.$().intlTelInput('setNumber', number);
+      }
+    }
   }),
 
   /**
@@ -289,25 +299,33 @@ export default Ember.TextField.extend({
    */
   setupIntlTelInput: Ember.on('didInsertElement', function() {
     var notifyPropertyChange = this.notifyPropertyChange.bind(this, 'value');
+    var that = this;
+    Ember.run.scheduleOnce('afterRender', function() {
 
-    // let Ember be aware of the changes
-    this.$().change(notifyPropertyChange);
+      // let Ember be aware of the changes
+      that.$().change(notifyPropertyChange);
 
-    this.$().intlTelInput({
-      allowExtensions: this.get('allowExtensions'),
-      autoFormat: this.get('autoFormat'),
-      autoHideDialCode: this.get('autoHideDialCode'),
-      autoPlaceholder: this.get('autoPlaceholder'),
-      defaultCountry: this.get('defaultCountry'),
-      geoIpLookup: this.get('geoIpLookup'),
-      nationalMode: this.get('nationalMode'),
-      numberType: this.get('numberType'),
-      onlyCountries: this.get('onlyCountries'),
-      preferredCountries: this.get('preferredCountries'),
-    })
-    .then(function() {
-      // trigger a change after the plugin is initialized to set initial values
-      notifyPropertyChange();
+      that.$().intlTelInput({
+        allowExtensions: that.get('allowExtensions'),
+        autoFormat: that.get('autoFormat'),
+        autoHideDialCode: that.get('autoHideDialCode'),
+        autoPlaceholder: that.get('autoPlaceholder'),
+        defaultCountry: that.get('defaultCountry'),
+        geoIpLookup: that.get('geoIpLookup'),
+        nationalMode: that.get('nationalMode'),
+        numberType: that.get('numberType'),
+        onlyCountries: that.get('onlyCountries'),
+        preferredCountries: that.get('preferredCountries')
+      })
+      .then(function() {
+        // trigger a change after the plugin is initialized to set initial values
+        notifyPropertyChange();
+        var number = that.get('deferNumber');
+        if (number !== null) {
+          that.$().intlTelInput('setNumber', number);
+          that.set('deferNumber', null)
+        }
+      });
     });
   }),
 
