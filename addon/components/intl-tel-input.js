@@ -210,7 +210,6 @@ export default Ember.TextField.extend({
         // schedule to set after element is created
         this.set('deferNumber', number);
       } else {
-        if (!number.startsWith('+')) { number = '+' + number; }
         this.$().intlTelInput('setNumber', number);
       }
     }
@@ -323,8 +322,8 @@ export default Ember.TextField.extend({
         notifyPropertyChange();
         var number = that.get('deferNumber');
         if (number !== null) {
-          if (!number.startsWith('+')) { number = '+' + number; }
           that.$().intlTelInput('setNumber', number);
+          that.set('deferNumber', null)
         }
       });
     });
