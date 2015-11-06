@@ -7,7 +7,7 @@ moduleForComponent('intl-tel-input', 'Unit | Component | intl tel input', {
 });
 
 test('it renders', function(assert) {
-  assert.expect(2);
+  assert.expect(4);
 
   // Creates the component instance
   var component = this.subject();
@@ -16,4 +16,8 @@ test('it renders', function(assert) {
   // Renders the component to the page
   this.render();
   assert.equal(component._state, 'inDOM');
+
+  var element = component.$()[0];
+  assert.equal(element.tagName.toLowerCase(), 'input');
+  assert.equal(element.type.toLowerCase(), 'tel');
 });
