@@ -21,3 +21,12 @@ test('it renders', function(assert) {
   assert.equal(element.tagName.toLowerCase(), 'input');
   assert.equal(element.type.toLowerCase(), 'tel');
 });
+
+test('setupIntlTelInput', function(assert) {
+  assert.expect(1);
+
+  sinon.spy(jQuery.fn, 'intlTelInput');
+
+  this.render();
+  assert.ok(jQuery.fn.intlTelInput.called, 'intlTelInput called');
+});
