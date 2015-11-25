@@ -1,9 +1,12 @@
+/* jshint node:true */
 /* global require, module */
-var EmberApp = require('ember-cli/lib/broccoli/ember-addon');
+var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+var isProduction = EmberApp.env() === 'production';
+var path = require('path');
 
 module.exports = function(defaults) {
-  var app = new EmberApp(defaults, {
-
+  var app = new EmberAddon(defaults, {
     sassOptions: {
       extension: 'scss',
       includePaths: [
@@ -12,16 +15,13 @@ module.exports = function(defaults) {
     },
 
     'ember-prism': {
-
-      'components': [
+      components: [
         'handlebars',
         'javascript',
       ],
-
-      'plugins': [
+      plugins: [
         'show-language',
       ],
-
     },
 
     fingerprint: {
@@ -31,7 +31,6 @@ module.exports = function(defaults) {
     intlTelInput: {
       includeUtilsScript: true,
     },
-
   });
 
   /*
@@ -41,7 +40,16 @@ module.exports = function(defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
-  app.import('bower_components/bootstrap-sass/assets/javascripts/bootstrap.js');
+  function importFromBower(relativePath, options) {
+    options = options || {};
+    app.import(path.join(app.bowerDirectory, relativePath), options);
+  }
+
+  importFromBower('bootstrap-sass/assets/javascripts/bootstrap.js');
+
+  if (!isProduction) {
+    importFromBower('es5-shim/es5-shim.js', { type: 'test' });
+  }
 
   return app.toTree();
 };
