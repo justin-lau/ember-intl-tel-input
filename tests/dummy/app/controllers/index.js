@@ -4,13 +4,13 @@ import $ from 'jquery';
 export default Ember.Controller.extend({
 
   geoIpLookupFunc: function(callback) {
-    $.getJSON('//www.telize.com/geoip')
+    $.getJSON('http://ipinfo.io/')
      .always(function(resp) {
-       if (!resp || !resp.country_code) {
+       if (!resp || !resp.country) {
          callback('');
        }
 
-       callback(resp.country_code);
+       callback(resp.country);
      });
   },
 

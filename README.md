@@ -35,15 +35,14 @@ The component derives from `Ember.TextField`, anything you can do with the input
 With the [utilities script](https://github.com/Bluefieldscom/intl-tel-input#utilities-script) included, the `autoFormat` and `autoPlaceholder` options are automatically enabled.
 
 ```javascript
-// Brocfile.js
-
-var app = new EmberAddon({
-
-  intlTelInput: {
-    includeUtilsScript: true, // default to false
-  },
-
-});
+// ember-cli-build.js
+module.exports = function(defaults) {
+  var app = new EmberAddon(defaults, {
+    intlTelInput: {
+      includeUtilsScript: true, // default to false
+    },
+  });
+};
 ```
 
 ```htmlbars
@@ -113,6 +112,8 @@ The original jQuery plugin also depends on several other open-source libraries:
 * Formatting/validation/example number code from Google's libphonenumber
 * Lookup user's country using ipinfo.io
 
-This [addon's demo page](http://justin-lau.github.io/ember-intl-tel-input/) uses [Telize](http://www.telize.com/) for a fast, SSL-supported, yet FREE Geo IP service.
+~~This [addon's demo page](http://justin-lau.github.io/ember-intl-tel-input/) uses [Telize](http://www.telize.com/) for a fast, SSL-supported, yet FREE Geo IP service.~~
+
+[Telize no longer provide free services due to heavy abuse](http://www.cambus.net/adventures-in-running-a-free-public-api/). The demo has switched over to [ipinfo.io](http://ipinfo.io).
 
 The layout and color theme of the demo page comes from [Twitter's Bootstrap](http://getbootstrap.com/) and [Ember.js](http://emberjs.com/), respectively.
