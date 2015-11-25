@@ -1,4 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
+import wait from 'ember-test-helpers/wait';
+import Ember from 'ember';
 
 moduleForComponent('intl-tel-input', 'Unit | Component | intl tel input', {
   unit: true,
@@ -66,4 +68,29 @@ test('properties', function (assert) {
   },
   jQuery.fn.intlTelInput.args[0][0],
   'intlTelInput called with arguments');
+});
+
+test('it syncs the component value to the input value', function (assert) {
+  assert.expect(3);
+
+  var component = this.subject();
+  this.render();
+
+  Ember.run(() => {
+    component.set('value', 'old value');
+  });
+
+  var el = component.$();
+
+  assert.equal(el.val(), 'old value');
+
+  Ember.run(() => {
+    el.val('new value');
+    el.change();
+  });
+
+  return wait().then(() => {
+    assert.equal(el.val(), 'new value');
+    assert.equal(component.get('value'), 'new value');
+  });
 });
