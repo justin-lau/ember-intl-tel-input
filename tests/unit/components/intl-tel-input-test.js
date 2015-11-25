@@ -104,3 +104,31 @@ test('isValidNumber', function (assert) {
 
   assert.ok(component.get('isValidNumber'), 'isValidNumber');
 });
+
+test('selectedCountryData', function (assert) {
+  assert.expect(1);
+
+  var component = this.subject();
+  component.set('onlyCountries', ['us']);
+  component.set('defaultCountry', 'us');
+  this.render();
+
+  assert.deepEqual(component.get('selectedCountryData'), {
+    'areaCodes': null,
+    'dialCode': '1',
+    'iso2': 'us',
+    'name': 'United States',
+    'priority': 0
+  });
+});
+
+test('extension', function (assert) {
+  assert.expect(1);
+
+  var component = this.subject();
+  component.set('numberFormat', 'E14');
+  component.set('value', '+12065555555 ext. 12345');
+  this.render();
+
+  assert.equal(component.get('extension'), '12345');
+});
