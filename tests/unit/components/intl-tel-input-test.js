@@ -94,3 +94,13 @@ test('it syncs the component value to the input value', function (assert) {
     assert.equal(component.get('value'), 'new value');
   });
 });
+
+test('isValidNumber', function (assert) {
+  assert.expect(1);
+
+  var component = this.subject();
+  component.set('value', '12065555555');
+  this.render();
+
+  assert.ok(component.get('isValidNumber'), 'isValidNumber');
+});
