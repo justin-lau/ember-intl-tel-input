@@ -2,9 +2,7 @@
   "predef": [
     "document",
     "window",
-    "-Promise",
-    "sinon",
-    "jQuery"
+    "-Promise"
   ],
   "browser": true,
   "boss": true,

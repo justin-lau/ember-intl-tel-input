@@ -1,8 +1,10 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import wait from 'ember-test-helpers/wait';
+import sinon from 'sinon';
 import Ember from 'ember';
+import jQuery from 'jquery';
 
-moduleForComponent('intl-tel-input', 'Unit | Component | intl tel input', {
+moduleForComponent('intl-tel-input', 'Unit | Component | intl-tel-input', {
   unit: true,
   beforeEach() {
     sinon.spy(jQuery.fn, 'intlTelInput');
@@ -12,7 +14,7 @@ moduleForComponent('intl-tel-input', 'Unit | Component | intl tel input', {
   }
 });
 
-test('it renders', function (assert) {
+test('it renders', function(assert) {
   assert.expect(4);
 
   // Creates the component instance
@@ -28,14 +30,14 @@ test('it renders', function (assert) {
   assert.equal(element.type.toLowerCase(), 'tel');
 });
 
-test('setupIntlTelInput', function (assert) {
+test('setupIntlTelInput', function(assert) {
   assert.expect(1);
 
   this.render();
   assert.ok(jQuery.fn.intlTelInput.called, 'intlTelInput called');
 });
 
-test('properties', function (assert) {
+test('properties', function(assert) {
   assert.expect(1);
 
   var component = this.subject();
@@ -55,22 +57,22 @@ test('properties', function (assert) {
   this.render();
 
   assert.deepEqual({
-    allowExtensions: 'allow extensions',
-    autoFormat: 'auto format',
-    autoHideDialCode: 'auto hide dial code',
-    autoPlaceholder: 'auto placeholder',
-    defaultCountry: 'us',
-    geoIpLookup: 'geo ip lookup',
-    nationalMode: 'national mode',
-    numberType: 'MOBILE',
-    onlyCountries: ['us'],
-    preferredCountries: ['us']
-  },
-  jQuery.fn.intlTelInput.args[0][0],
-  'intlTelInput called with arguments');
+      allowExtensions: 'allow extensions',
+      autoFormat: 'auto format',
+      autoHideDialCode: 'auto hide dial code',
+      autoPlaceholder: 'auto placeholder',
+      defaultCountry: 'us',
+      geoIpLookup: 'geo ip lookup',
+      nationalMode: 'national mode',
+      numberType: 'MOBILE',
+      onlyCountries: ['us'],
+      preferredCountries: ['us']
+    },
+    jQuery.fn.intlTelInput.args[0][0],
+    'intlTelInput called with arguments');
 });
 
-test('it syncs the component value to the input value', function (assert) {
+test('it syncs the component value to the input value', function(assert) {
   assert.expect(3);
 
   var component = this.subject();
@@ -95,7 +97,7 @@ test('it syncs the component value to the input value', function (assert) {
   });
 });
 
-test('isValidNumber', function (assert) {
+test('isValidNumber', function(assert) {
   assert.expect(1);
 
   var component = this.subject();
@@ -105,7 +107,7 @@ test('isValidNumber', function (assert) {
   assert.ok(component.get('isValidNumber'), 'isValidNumber');
 });
 
-test('selectedCountryData', function (assert) {
+test('selectedCountryData', function(assert) {
   assert.expect(1);
 
   var component = this.subject();
@@ -122,7 +124,7 @@ test('selectedCountryData', function (assert) {
   });
 });
 
-test('extension', function (assert) {
+test('extension', function(assert) {
   assert.expect(1);
 
   var component = this.subject();
@@ -133,7 +135,7 @@ test('extension', function (assert) {
   assert.equal(component.get('extension'), '12345');
 });
 
-test('number', function (assert) {
+test('number', function(assert) {
   assert.expect(1);
 
   var component = this.subject();
