@@ -2,6 +2,9 @@
 /* global require, module */
 
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+var isProduction = EmberApp.env() === 'production';
+var path = require('path');
 
 /*
   This Brocfile specifes the options for the dummy test app of this
@@ -21,16 +24,13 @@ var app = new EmberAddon({
   },
 
   'ember-prism': {
-
-    'components': [
+    components: [
       'handlebars',
       'javascript',
     ],
-
-    'plugins': [
+    plugins: [
       'show-language',
     ],
-
   },
 
   fingerprint: {
@@ -40,9 +40,17 @@ var app = new EmberAddon({
   intlTelInput: {
     includeUtilsScript: true,
   },
-
 });
 
-app.import('bower_components/bootstrap-sass/assets/javascripts/bootstrap.js');
+function importFromBower(relativePath, options) {
+  options = options || {};
+  app.import(path.join(app.bowerDirectory, relativePath), options);
+}
+
+importFromBower('bootstrap-sass/assets/javascripts/bootstrap.js');
+
+if (!isProduction) {
+  importFromBower('es5-shim/es5-shim.js', { type: 'test' });
+}
 
 module.exports = app.toTree();

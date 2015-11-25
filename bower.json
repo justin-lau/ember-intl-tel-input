@@ -16,6 +16,7 @@
     "bootstrap-sass": "~3.3.5",
     "prism": "~1.0.0",
     "sinon": "~1.17.2",
-    "sinonjs": "~1.17.1"
+    "sinonjs": "~1.17.1",
+    "es5-shim": "~4.3.1"
   }
 }
