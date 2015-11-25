@@ -132,3 +132,14 @@ test('extension', function (assert) {
 
   assert.equal(component.get('extension'), '12345');
 });
+
+test('number', function (assert) {
+  assert.expect(1);
+
+  var component = this.subject();
+  component.set('numberFormat', 'E14');
+  component.set('value', '1 206 555 5555 ext. 12345');
+  this.render();
+
+  assert.equal(component.get('number'), '+1206555555512345');
+});
