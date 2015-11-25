@@ -304,10 +304,6 @@ export default Ember.TextField.extend({
       numberType: this.get('numberType'),
       onlyCountries: this.get('onlyCountries'),
       preferredCountries: this.get('preferredCountries'),
-    })
-    .then(function() {
-      // trigger a change after the plugin is initialized to set initial values
-      notifyPropertyChange();
     });
   }),
 
