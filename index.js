@@ -10,7 +10,7 @@ module.exports = {
     var config = app.options.intlTelInput;
 
     if (config && true === config.includeUtilsScript) {
-      app.import(app.bowerDirectory + '/intl-tel-input/lib/libphonenumber/build/utils.js');
+      app.import(app.bowerDirectory + '/intl-tel-input/build/js/utils.js');
     }
 
     app.import(app.bowerDirectory + '/intl-tel-input/build/js/intlTelInput.js');
