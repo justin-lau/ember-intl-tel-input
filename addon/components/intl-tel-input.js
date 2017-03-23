@@ -3,7 +3,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/intl-tel-input';
 
-export default Ember.TextField.extend({
+export default Ember.Component.extend({
   layout: layout,
   tagName: 'input',
   attributeBindings: ['type'],
@@ -13,24 +13,55 @@ export default Ember.TextField.extend({
    * When `autoFormat` is enabled, this option will support formatting
    * extension numbers e.g. "+1 (702) 123-1234 ext. 12345".
    *
+   * @deprecated
    * @property allowExtensions
    * @type Boolean
    * @default false
    */
-  allowExtensions: false,
+  allowExtensions: Ember.computed({
+    set() {
+      Ember.deprecate('The allowExtensions & autoFormat options are not supported anymore', false, {
+        id: 'ember-intl-tel-input.auto-format',
+        until: '2.0.0'
+      });
+    },
+
+    get() {}
+  }),
+
 
   /**
+   * This property is deprecated and not supported anymore by intl-tel-input.
    * Format the number on each keypress according to the country-specific
    * formatting rules. This will also prevent the user from entering invalid
    * characters (triggering a red flash in the input - see
    * [Troubleshooting](https://github.com/Bluefieldscom/intl-tel-input#troubleshooting)
    * to customise this). Requires the utilities script.
    *
+   * @deprecated
    * @property autoFormat
    * @type Boolean
    * @default true
    */
-  autoFormat: true,
+  autoFormat: Ember.computed({
+    set() {
+      Ember.deprecate('The autoFormat option is not supported anymore', false, {
+        id: 'ember-intl-tel-input.auto-format',
+        until: '2.0.0'
+      });
+    },
+
+    get() {}
+  }),
+
+  /**
+   * Format the input value during initialisation.
+   *
+   * @property formatOnInit
+   * @type Boolean
+   * @default true
+   */
+  formatOnInit: true,
 
   /**
    * If there is just a dial code in the input: remove it on blur, and re-add
@@ -45,18 +76,52 @@ export default Ember.TextField.extend({
 
   /**
    * Add or remove input placeholder with an example number for the selected
-   * country. Requires the utilities script.
+   * country. Requires the utilities script.a
+   * Possible values are "polite", "aggresive" and "off"
    *
    * @property autoPlaceholder
-   * @type Boolean
-   * @default true
+   * @type String
+   * @default polite
    */
-  autoPlaceholder: true,
+  autoPlaceholder: Ember.computed({
+    get() {
+      return this._autoPlaceholder;
+    },
+
+    set(key, value) {
+      const validType = typeof value === 'string';
+      Ember.deprecate('autoPlaceholder now is a String property', validType, {
+        id: 'ember-intl-tel-input.auto-placeholder-boolean',
+        until: '2.0.0'
+      });
+
+      this._autoPlaceholder = validType ? value : (value ? 'polite' : 'off');
+      return value;
+    }
+  }),
+
+  _autoPlaceholder: 'polite',
+
+  /**
+   * Set the initial country by it's country code. You can also set it to
+   * `"auto"`, which will lookup the user's country based on their
+   * IP address - requires the `geoIpLookup` option
+   * - [see example](http://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/default-country-ip.html).
+   * Otherwise it will just be the first country in the list. **Note that if
+   * you choose to do the auto lookup, and you also happen to use the
+   * [jquery-cookie](https://github.com/carhartl/jquery-cookie) plugin, it
+   * will store the loaded country code in a cookie for future use.**
+   *
+   * @property initialCountry
+   * @type String
+   * @default ""
+   */
+  initialCountry: '',
 
   /**
    * Set the default country by it's country code. You can also set it to
    * `"auto"`, which will lookup the user's country based on their
-   * IP address - requires the `geoIpLookup` option - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html).
+   * IP address - requires the `geoIpLookup` option
    * Otherwise it will just be the first country in the list. **Note that if
    * you choose to do the auto lookup, and you also happen to use the
    * [jquery-cookie](https://github.com/carhartl/jquery-cookie) plugin, it
@@ -64,9 +129,13 @@ export default Ember.TextField.extend({
    *
    * @property defaultCountry
    * @type String
+   * @deprecated
    * @default ""
    */
-  defaultCountry: '',
+  defaultCountry: Ember.computed.deprecatingAlias('initialCountry', {
+    id: 'ember-intl-tel-input.deprecate-default-country',
+    until: '2.0.0'
+  }),
 
   /**
    * When setting `defaultCountry` to `"auto"`, we need to use a special
@@ -195,15 +264,7 @@ export default Ember.TextField.extend({
    * @type String
    * @readOnly
    */
-  number: Ember.computed('value', 'numberFormat', {
-    get() {
-      if (this.get('hasUtilsScript')) {
-        let numberFormat = intlTelInputUtils.numberFormat[this.get('numberFormat')];
-        return this.$().intlTelInput('getNumber', numberFormat);
-      }
-    },
-    set() { /* no-op */ }
-  }),
+  number: '',
 
   /**
    * Get the extension part of the current number, so if the number was
@@ -227,7 +288,7 @@ export default Ember.TextField.extend({
    * @type Object
    * @readOnly
    */
-  selectedCountryData: Ember.computed('value', {
+  selectedCountryData: Ember.computed('number', {
     get() {
       return this.$().intlTelInput('getSelectedCountryData');
     },
@@ -290,23 +351,26 @@ export default Ember.TextField.extend({
    * @method didInsertElement
    */
   didInsertElement() {
-    let notifyPropertyChange = this.notifyPropertyChange.bind(this, 'value');
-
-    // let Ember be aware of the changes
-    this.$().change(notifyPropertyChange);
-
+    this._super(...arguments)
+    this.$().on('input', event => this.send('handleUpdate', event));
     this.$().intlTelInput({
-      allowExtensions: this.get('allowExtensions'),
-      autoFormat: this.get('autoFormat'),
       autoHideDialCode: this.get('autoHideDialCode'),
       autoPlaceholder: this.get('autoPlaceholder'),
-      defaultCountry: this.get('defaultCountry'),
+      initialCountry: this.get('initialCountry'),
       geoIpLookup: this.get('geoIpLookup'),
       nationalMode: this.get('nationalMode'),
       numberType: this.get('numberType'),
       onlyCountries: this.get('onlyCountries'),
       preferredCountries: this.get('preferredCountries'),
     });
+  },
+
+  didRender() {
+    this._super(...arguments)
+    const value = this.get('value')
+    if (value) {
+      this.$().intlTelInput('setNumber', value)
+    }
   },
 
   /**
@@ -317,4 +381,22 @@ export default Ember.TextField.extend({
   willDestroyElement() {
     this.$().intlTelInput('destroy');
   },
+
+  actions: {
+    handleUpdate(event) {
+      if (this.get('hasUtilsScript')) {
+        const numberFormat = intlTelInputUtils.numberFormat[this.get('numberFormat')];
+        const formatted = this.$().intlTelInput('getNumber', numberFormat);
+        this.set('number', formatted);
+      }
+
+      this.sendAction('update', event.target.value, this.getProperties([
+        'number',
+        'extension',
+        'selectedCountryData',
+        'isValidNumber',
+        'validationError'
+      ]));
+    }
+  }
 });
