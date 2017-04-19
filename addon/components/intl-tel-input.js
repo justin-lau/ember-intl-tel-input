@@ -54,7 +54,7 @@ export default Ember.TextField.extend({
   autoPlaceholder: true,
 
   /**
-   * Set the default country by it's country code. You can also set it to
+   * Set the initial country by it's country code. You can also set it to
    * `"auto"`, which will lookup the user's country based on their
    * IP address - requires the `geoIpLookup` option - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html).
    * Otherwise it will just be the first country in the list. **Note that if
@@ -62,11 +62,11 @@ export default Ember.TextField.extend({
    * [jquery-cookie](https://github.com/carhartl/jquery-cookie) plugin, it
    * will store the loaded country code in a cookie for future use.**
    *
-   * @property defaultCountry
+   * @property initialCountry
    * @type String
    * @default ""
    */
-  defaultCountry: '',
+  initialCountry: '',
 
   /**
    * When setting `defaultCountry` to `"auto"`, we need to use a special
@@ -300,7 +300,7 @@ export default Ember.TextField.extend({
       autoFormat: this.get('autoFormat'),
       autoHideDialCode: this.get('autoHideDialCode'),
       autoPlaceholder: this.get('autoPlaceholder'),
-      defaultCountry: this.get('defaultCountry'),
+      initialCountry: this.get('initialCountry'),
       geoIpLookup: this.get('geoIpLookup'),
       nationalMode: this.get('nationalMode'),
       numberType: this.get('numberType'),
