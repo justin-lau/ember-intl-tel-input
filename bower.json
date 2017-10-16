@@ -12,7 +12,7 @@
     "jquery": "^1.11.1",
     "loader.js": "ember-cli/loader.js#3.2.0",
     "qunit": "~1.18.0",
-    "intl-tel-input": "~6.0.3",
+    "intl-tel-input": "12.1.1",
     "bootstrap-sass": "~3.3.5",
     "prism": "~1.0.0",
     "sinon": "~1.17.2",
